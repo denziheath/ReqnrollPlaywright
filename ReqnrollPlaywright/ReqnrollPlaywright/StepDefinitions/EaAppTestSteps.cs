@@ -1,41 +1,48 @@
+using ReqnrollPlaywright.Drivers;
+using ReqnrollPlaywright.Pages;
+using SpecFlow.Assist;
+
 namespace ReqnrollPlaywright.StepDefinitions
 {
     [Binding]
     public sealed class EaAppTestSteps
     {
+        private readonly Driver _driver;
+        private readonly LoginPage _loginpage;
 
-        private readonly ScenarioContext _scenarioContext;
-
-        public EaAppTestSteps(ScenarioContext scenarioContext)
+        public EaAppTestSteps(Driver driver)
         {
-            _scenarioContext = scenarioContext;
+            _driver = driver;
+            _loginpage = new LoginPage(_driver.Page);
         }
+
+
 
         [Given(@"I enter following login details")]
 
-        public void GivenIEnterFollowingLoginDetails(Table table)
+        public async Task GivenIEnterFollowingLoginDetails(Table table)
         {
-            ScenarioContext.StepIsPending();
-        }
+            // ScenarioContext.StepIsPending is deprecated -> throw new PendingStepException();
 
+            dynamic data = table.CreateDynamicInstance();
+            await _loginpage.Login((string)data.UserName, (string)data.Password);
+        }
 
         [Given("I navigate to the application")]
         public void GivenINavigateToTheApplication()
         {
-            // ScenarioContext.StepIsPending is deprecated, this is new -> throw new PendingStepException();
-            ScenarioContext.StepIsPending();
+            _driver.Page.GotoAsync(url:"http://www.eaapp.somee.com");
         }
 
         [Given("I click login link")]
-        public void GivenIClickLoginLink()
+        public async Task GivenIClickLoginLink()
         {
-            ScenarioContext.StepIsPending();
+            await _loginpage.ClickLogin();
         }
 
         [Then("I see employee lists")]
         public void ThenISeeEmployeeLists()
         {
-            ScenarioContext.StepIsPending();
         }
 
     }
