@@ -1,6 +1,5 @@
 using ReqnrollPlaywright.Drivers;
 using ReqnrollPlaywright.Pages;
-using SpecFlow.Assist;
 
 namespace ReqnrollPlaywright.StepDefinitions
 {
@@ -24,6 +23,7 @@ namespace ReqnrollPlaywright.StepDefinitions
         {
             // ScenarioContext.StepIsPending is deprecated -> throw new PendingStepException();
 
+            //Specflow is deprecated so this line isnt working
             dynamic data = table.CreateDynamicInstance();
             await _loginpage.Login((string)data.UserName, (string)data.Password);
         }
@@ -41,8 +41,11 @@ namespace ReqnrollPlaywright.StepDefinitions
         }
 
         [Then("I see employee lists")]
-        public void ThenISeeEmployeeLists()
+        public async Task ThenISeeEmployeeLists()
         {
+            //no idea why this is throwing an error
+            var isExist = await _loginPage.IsEmployeeDetailsExists();
+            isExist.Should().Be(true);
         }
 
     }

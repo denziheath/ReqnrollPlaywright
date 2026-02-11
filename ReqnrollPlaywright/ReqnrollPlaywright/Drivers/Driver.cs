@@ -24,7 +24,7 @@ namespace ReqnrollPlaywright.Drivers
         //initializes playwright object
         public async Task<IPage> InitializePlaywright()
         {
-            using var playwright = await Playwright.CreateAsync();
+            var playwright = await Playwright.CreateAsync();
             _browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = false
